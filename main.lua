@@ -1,5 +1,6 @@
 local drillSergeantAddOn = {
 	timer=0,
+	frequency=30,
 	enabled=false,
 	roleLines={
 		["DAMAGER"]={
@@ -43,7 +44,7 @@ local function onUpdate(self, elapsed)
 	dsa.timer = dsa.timer - elapsed
 	if dsa.timer <= 0 then
 		inspireTheTroops()
-		dsa.timer = 30
+		dsa.timer = dsa.frequency
 	end
 end
 
@@ -52,8 +53,9 @@ f:SetScript("OnUpdate", onUpdate);
 
 
 SlashCmdList['DRILLSERGEANT'] = function(msg, editbox)
-local cmd = msg:lower()
-if cmd == 'start' then
+	local args = split(msg, " +")
+	local cmd = args[0]:lower()
+	if cmd == 'start' then
 		if (dsa.enabled == false) then
 			dsa.enabled = true
 			dsa.timer = 0
@@ -64,9 +66,17 @@ if cmd == 'start' then
 	elseif cmd == 'stop' then
 		dsa.enabled = false
 		print("Drill Sergeant Disabled")
+	elseif cmd == 'frequency' then
+		if args[1] then
+			dsa.frequency = math.floor(tonumber(args[1]))
+		else
+			print("frequency requires a numeric argument.")
+		end
 	else
-		print("Invalid command, dummy.")
+		print("/ds usage:")
+		print("  enable: start the drill sergeant")
+		print("  disable: stop the drill sergeant")
+		print("  frequency [int]: adjust how often the drill sergeant inspires the troops")
 	end
 end
 SLASH_DRILLSERGEANT1 = '/ds'
-
