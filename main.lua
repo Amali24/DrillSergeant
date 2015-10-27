@@ -21,19 +21,11 @@ local drillSergeantAddOn = {
 
 local dsa = drillSergeantAddOn;
 
-local function onUpdate(self, elapsed)
-	timer = timer - elapsed
-	if timer <= 0 then
-		inspireTheTroops()
-		timer = 30
-	end
-end
-
 local function inspireTheTroops()
-	if (isInRaid() == true) then
+	if (IsInRaid() == true) then
 		local raidSize = GetNumGroupMembers();
 		local i = math.random(raidSize);
-		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(index);
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i);
 		local playerSpecRole = UnitGroupRolesAssigned(name);
 		local j = table.getn(dsa["roleLines"][playerSpecRole]);
 		local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)];
@@ -44,5 +36,14 @@ local function inspireTheTroops()
 	end
 end
 
-local f = CreateFrame("drill_sargeant");
+
+local function onUpdate(self, elapsed)
+	dsa.timer = dsa.timer - elapsed
+	if dsa.timer <= 0 then
+		inspireTheTroops()
+		dsa.timer = 30
+	end
+end
+
+local f = CreateFrame("frame");
 f:SetScript("OnUpdate", onUpdate);
