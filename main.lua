@@ -1,16 +1,20 @@
 drillSergeantAddOn = {
 	inRaid=false,
 	roleLines={
-		["damage"]={
+		["DAMAGER"]={
 			"It's impressive how bad your DPS is with that gear.",
+			"LOLOLOL",
 		},
-		["healing"]={
+		["HEALER"]={
 			"You call that healing?",
 			"If you're not careful, both tanks might outheal you there."
 		},
-		["tanking"]={
+		["TANK"]={
 			"Do you think it'd be possible to take more unnecessary damage?",
 			"Maybe try popping a cooldown?",
+		},
+		["NONE"]={
+			"You're so bad at this you don't even have a role!",
 		},
 	}
 };
@@ -32,17 +36,17 @@ if (dsa.inRaid == true) then
 	-- using player name, we'll want to target the player
 	-- get that player's specialization, and grab the global ID for the spec
 	-- use GetSpecializationRoleByID(int) to figure out if it's tank/dps/hps
-	NotifyInspect(name)
-	local playerSpec = GetInspectSpecialization()
-	local playerSpecRole = GetSpecializationRoleByID(playerSpec)
+	
 
-	SendChatMessage(playerSpecRole, "RAID")
+	local playerSpecRole = UnitGroupRolesAssigned(name)
+	
+	-- SendChatMessage("" .. name .. "'s role is " .. playerSpecRole .. "", "RAID")
 
 	-- grab a phrase
 	local j = table.getn(dsa["roleLines"][playerSpecRole])
-	local phrase = dsa["roleLines"][playerSpecRole][math.random(0, j-1)]
+	local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)]
 		
-	-- SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID")
+	SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID")
 else
 	message("Not in a raid. Sorry there, chief.");
 end
