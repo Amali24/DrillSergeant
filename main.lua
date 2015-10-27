@@ -1,5 +1,6 @@
 local drillSergeantAddOn = {
 	timer=0,
+	enabled = false,
 	roleLines={
 		["DAMAGER"]={
 			"It's impressive how bad your DPS is with that gear.",
@@ -22,17 +23,19 @@ local drillSergeantAddOn = {
 local dsa = drillSergeantAddOn;
 
 local function inspireTheTroops()
-	if (IsInRaid() == true) then
-		local raidSize = GetNumGroupMembers();
-		local i = math.random(raidSize);
-		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i);
-		local playerSpecRole = UnitGroupRolesAssigned(name);
-		local j = table.getn(dsa["roleLines"][playerSpecRole]);
-		local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)];
+	if (dsa.enabled == true) then
+		if (IsInRaid() == true) then
+			local raidSize = GetNumGroupMembers();
+			local i = math.random(raidSize);
+			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i);
+			local playerSpecRole = UnitGroupRolesAssigned(name);
+			local j = table.getn(dsa["roleLines"][playerSpecRole]);
+			local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)];
 		
-		SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
-	else
-		SendChatMessage("not in a raid");
+			SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
+		else
+			SendChatMessage("not in a raid");
+		end
 	end
 end
 
