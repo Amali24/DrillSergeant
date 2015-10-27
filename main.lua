@@ -1,6 +1,6 @@
 local drillSergeantAddOn = {
 	timer=0,
-	enabled = false,
+	enabled=false,
 	roleLines={
 		["DAMAGER"]={
 			"It's impressive how bad your DPS is with that gear.",
@@ -31,14 +31,13 @@ local function inspireTheTroops()
 			local playerSpecRole = UnitGroupRolesAssigned(name);
 			local j = table.getn(dsa["roleLines"][playerSpecRole]);
 			local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)];
-		
+
 			SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
 		else
 			SendChatMessage("not in a raid");
 		end
 	end
 end
-
 
 local function onUpdate(self, elapsed)
 	dsa.timer = dsa.timer - elapsed
@@ -50,3 +49,16 @@ end
 
 local f = CreateFrame("frame");
 f:SetScript("OnUpdate", onUpdate);
+
+SLASH DRILLSERGEANT = '/ds';
+local function cmd_handler(msg, editbox)
+	if msg == 'start' then
+		dsa.enabled = true
+		dsa.timer = 0
+	else if msg == 'stop' then
+		dsa.enabled = false
+	else
+		SendChatMessage("Invalid command, dummy.")
+	end
+end
+SlashCmdList["DRILLSERGEANT"] = cmd_handler;
