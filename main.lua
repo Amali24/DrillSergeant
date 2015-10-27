@@ -50,15 +50,23 @@ end
 local f = CreateFrame("frame");
 f:SetScript("OnUpdate", onUpdate);
 
-SLASH DRILLSERGEANT = '/ds';
-local function cmd_handler(msg, editbox)
-	if msg == 'start' then
-		dsa.enabled = true
-		dsa.timer = 0
-	else if msg == 'stop' then
+
+SlashCmdList['DRILLSERGEANT'] = function(msg, editbox)
+local cmd = msg:lower()
+if cmd == 'start' then
+		if (dsa.enabled == false) then
+			dsa.enabled = true
+			dsa.timer = 0
+			print("Drill Sergeant Enabled")
+		else
+			print("Drill Sergeant Already Enabled, Dummy.")
+		end
+	elseif cmd == 'stop' then
 		dsa.enabled = false
+		print("Drill Sergeant Disabled")
 	else
-		SendChatMessage("Invalid command, dummy.")
+		print("Invalid command, dummy.")
 	end
 end
-SlashCmdList["DRILLSERGEANT"] = cmd_handler;
+SLASH_DRILLSERGEANT1 = '/ds'
+
