@@ -1,5 +1,5 @@
-drillSergeantAddOn = {
-	inRaid=false,
+local drillSergeantAddOn = {
+	timer=0,
 	roleLines={
 		["DAMAGER"]={
 			"It's impressive how bad your DPS is with that gear.",
@@ -21,32 +21,28 @@ drillSergeantAddOn = {
 
 local dsa = drillSergeantAddOn;
 
--- Checks if in raid group
-dsa.inRaid = IsInRaid();
-
-if (dsa.inRaid == true) then
-	-- grab the number of members in the raid
-	dsa.raidSize = GetNumGroupMembers();
-	-- select a random player
-	local index = math.random(dsa.raidSize)
-	-- get information about that player
-	-- role appears to only be MAINTANK or TANK...
-	local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(index)
-
-	-- using player name, we'll want to target the player
-	-- get that player's specialization, and grab the global ID for the spec
-	-- use GetSpecializationRoleByID(int) to figure out if it's tank/dps/hps
-	
-
-	local playerSpecRole = UnitGroupRolesAssigned(name)
-	
-	-- SendChatMessage("" .. name .. "'s role is " .. playerSpecRole .. "", "RAID")
-
-	-- grab a phrase
-	local j = table.getn(dsa["roleLines"][playerSpecRole])
-	local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)]
-		
-	SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID")
-else
-	message("Not in a raid. Sorry there, chief.");
+local function onUpdate(self, elapsed)
+	timer = timer - elapsed
+	if timer <= 0 then
+		inspireTheTroops()
+		timer = 30
+	end
 end
+
+local function inspireTheTroops()
+	if (isInRaid() == true) then
+		local raidSize = GetNumGroupMembers();
+		local i = math.random(raidSize);
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(index);
+		local playerSpecRole = UnitGroupRolesAssigned(name);
+		local j = table.getn(dsa["roleLines"][playerSpecRole]);
+		local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)];
+		
+		SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
+	else
+		SendChatMessage("not in a raid");
+	end
+end
+
+local f = CreateFrame("drill_sargeant");
+f:SetScript("OnUpdate", onUpdate);
