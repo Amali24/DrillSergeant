@@ -35,7 +35,7 @@ local function inspireTheTroops()
 
 			SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
 		else
-			SendChatMessage("not in a raid");
+			print("not in a raid");
 		end
 	end
 end
@@ -51,11 +51,15 @@ end
 local f = CreateFrame("frame");
 f:SetScript("OnUpdate", onUpdate);
 
-
+local args = {}
+local index = 1
 SlashCmdList['DRILLSERGEANT'] = function(msg, editbox)
-	local args = split(msg, " +")
-	local cmd = args[0]:lower()
-	if cmd == 'start' then
+	for value in string.gmatch(msg, "%S+") do
+		args [index] = value
+		index = index + 1
+		end
+		cmd = args[1]
+	if (cmd == 'start') then
 		if (dsa.enabled == false) then
 			dsa.enabled = true
 			dsa.timer = 0
@@ -67,15 +71,15 @@ SlashCmdList['DRILLSERGEANT'] = function(msg, editbox)
 		dsa.enabled = false
 		print("Drill Sergeant Disabled")
 	elseif cmd == 'frequency' then
-		if args[1] then
+		if args[2] ~= nil then
 			dsa.frequency = math.floor(tonumber(args[1]))
 		else
 			print("frequency requires a numeric argument.")
 		end
 	else
 		print("/ds usage:")
-		print("  enable: start the drill sergeant")
-		print("  disable: stop the drill sergeant")
+		print("  start: start the drill sergeant")
+		print("  stop: stop the drill sergeant")
 		print("  frequency [int]: adjust how often the drill sergeant inspires the troops")
 	end
 end
