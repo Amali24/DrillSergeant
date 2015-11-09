@@ -9,29 +9,37 @@ local drillSergeantAddOn = {
 			"If you don't pick up the DPS, the tanks are going to beat you.",
 			"Pick it up!",
 			"Do you enjoy getting carried?",
+			"If you did any less damage, you'd actually be healing the boss.",
 		},
+		
 		["HEALER"]={
 			"You call that healing?!",
 			"If you're not careful, both tanks might outheal you there.",
-			"They're dying and it's all your fault!"
+			"They're dying and it's all your fault!",
+			"You know, your mana really only works if you spend it.",
+			"Pick it up!",
 		},
+		
 		["TANK"]={
 			"Do you think it'd be possible to take more unnecessary damage?",
 			"Maybe try popping a cooldown?",
+			"Are you naked or something?",
+			"It helps if you face the boss.",
 		},
+		
 		["NONE"]={
 			"You're so bad at this you don't even have a role!",
 			"Get a role, noob!",
 		},
-	dead={
-			"You died? Again? What a surprise",
-			"Dead again. Classic " .. name .. "",
-			"How's the floor taste?",
-			
-			}
-			}	
 	}
-};
+}
+ifDead={
+	"You died? Again? What a surprise",
+	"Dead again? Typical.",
+	"How's the floor taste?",
+	"Dead again or still?",
+	"Have you ever survived this fight?",
+	}
 
 local dsa = drillSergeantAddOn;
 
@@ -44,11 +52,11 @@ local function inspireTheTroops()
 			if (isDead == false) then
 				local playerSpecRole = UnitGroupRolesAssigned(name);
 				local j = table.getn(dsa["roleLines"][playerSpecRole]);
-				local phrase = dsa["roleLines"][playerSpecRole][math.random(1, j)];
+				local phrase = 7 --dsa["roleLines"][playerSpecRole][math.random(j)];
 			else
-				local d = table.getn(dsa["dead"])
-				local phrase = dsa["dead"][math.random(1,d)];
-
+				local d = table.getn(ifDead)
+				local phrase = ifDead[math.random(d)];
+			end
 			SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
 		else
 			print("not in a raid");
@@ -88,17 +96,20 @@ SlashCmdList['DRILLSERGEANT'] = function(msg, editbox)
 	elseif (cmd == 'stop') then
 		dsa.enabled = false
 		print("Drill Sergeant Disabled")
-	--elseif (cmd == 'frequency') then
-		--if args[2] ~= nil then
-			--dsa.frequency = math.floor(tonumber(args[2]))
-		--else
-			--print("frequency requires a numeric argument.")
-		--end
+	--[[
+	elseif (cmd == 'frequency') then
+		if ((args[2] ~= nil) and (args[2] > 0)) then
+			dsa.frequency = math.floor(args[2])
+		else
+			print("frequency requires a numeric argument above zero.")
+		end
+	--]]	
 	else
 		print("/ds usage:")
 		print("  start: start the drill sergeant")
 		print("  stop: stop the drill sergeant")
-		--print("  frequency [int]: adjust how often the drill sergeant inspires the troops")
+		print("  frequency [int]: adjust how often the drill sergeant inspires the troops")
+	
 	end
 end
 SLASH_DRILLSERGEANT1 = '/ds'
