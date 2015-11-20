@@ -10,14 +10,16 @@ local drillSergeantAddOn = {
 			"Pick it up!",
 			"Do you enjoy getting carried?",
 			"If you did any less damage, you'd actually be healing the boss.",
+			"Have you considered playing a class you're actually good at?",
 		},
 		
 		["HEALER"]={
 			"You call that healing?!",
 			"If you're not careful, both tanks might outheal you there.",
 			"They're dying and it's all your fault!",
-			"You know, your mana really only works if you spend it.",
+			"On the bright side, at least you'll never go oom if you never heal.",
 			"Pick it up!",
+			"Have you considered playing a class you're actually good at?",
 		},
 		
 		["TANK"]={
@@ -25,21 +27,24 @@ local drillSergeantAddOn = {
 			"Maybe try popping a cooldown?",
 			"Are you naked or something?",
 			"It helps if you face the boss.",
+			"Have you considered playing a class you're actually good at?",
 		},
 		
 		["NONE"]={
 			"You're so bad at this you don't even have a role!",
 			"Get a role, noob!",
 		},
-	}
-}
-ifDead={
+	},
+	
+	ifDead={
 	"You died? Again? What a surprise.",
 	"Dead again? Typical.",
 	"How's the floor taste?",
 	"Dead again or still?",
-	"Have you ever survived this fight?",
-	}
+	"Have you ever survived this fight",
+	"Let me guess. \"It was lag,\" right?"
+	},
+}
 
 local dsa = drillSergeantAddOn;
 
@@ -55,8 +60,8 @@ local phrase = ""
 				local j = table.getn(dsa["roleLines"][playerSpecRole]);
 				phrase = dsa["roleLines"][playerSpecRole][math.random(j)];
 			else
-				local d = table.getn(ifDead)
-				phrase =  ifDead[math.random(d)];
+				local d = table.getn(dsa.ifDead)
+				phrase =  dsa.ifDead[math.random(d)];
 			end
 			SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
 		else
@@ -106,10 +111,10 @@ SlashCmdList['DRILLSERGEANT'] = function(msg, editbox)
 		end
 	--]]	
 	else
-		print("/ds usage:")
-		print("  start: start the drill sergeant")
-		print("  stop: stop the drill sergeant")
-		print("  frequency [int]: adjust how often the drill sergeant inspires the troops")
+		print("  /ds usage:")
+		print("      start: start the drill sergeant")
+		print("      stop: stop the drill sergeant")
+		-- print("  frequency [int]: adjust how often the drill sergeant inspires the troops")
 	
 	end
 end
