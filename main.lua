@@ -34,7 +34,7 @@ local drillSergeantAddOn = {
 	}
 }
 ifDead={
-	"You died? Again? What a surprise",
+	"You died? Again? What a surprise.",
 	"Dead again? Typical.",
 	"How's the floor taste?",
 	"Dead again or still?",
@@ -44,18 +44,19 @@ ifDead={
 local dsa = drillSergeantAddOn;
 
 local function inspireTheTroops()
+local phrase = ""
 	if (dsa.enabled == true) then
 		if (IsInRaid() == true) then
 			local raidSize = GetNumGroupMembers();
-			local i = math.random(raidSize);
+			local i = 1 -- math.random(raidSize);
 			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i);
 			if (isDead == false) then
 				local playerSpecRole = UnitGroupRolesAssigned(name);
 				local j = table.getn(dsa["roleLines"][playerSpecRole]);
-				local phrase = 7 --dsa["roleLines"][playerSpecRole][math.random(j)];
+				phrase = dsa["roleLines"][playerSpecRole][math.random(j)];
 			else
 				local d = table.getn(ifDead)
-				local phrase = ifDead[math.random(d)];
+				phrase =  ifDead[math.random(d)];
 			end
 			SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
 		else
