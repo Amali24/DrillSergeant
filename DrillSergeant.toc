@@ -1,0 +1,6 @@
+## Interface: 60200
+## Title: Drill Sergeant
+## Author: Amali & Thunderstud
+## Version: 1.0
+
+main.lua
