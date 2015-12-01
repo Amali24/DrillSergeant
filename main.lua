@@ -51,23 +51,19 @@ local dsa = drillSergeantAddOn;
 local function inspireTheTroops()
 local phrase = ""
 	if (dsa.enabled == true) then
-		if (IsInRaid() == true) then
-			local raidSize = GetNumGroupMembers();
-			local i = 1 -- math.random(raidSize);
-			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i);
-			if (isDead == false) then
-				local playerSpecRole = UnitGroupRolesAssigned(name);
-				local j = table.getn(dsa["roleLines"][playerSpecRole]);
-				phrase = dsa["roleLines"][playerSpecRole][math.random(j)];
-			else
-				local d = table.getn(dsa.ifDead)
-				phrase =  dsa.ifDead[math.random(d)];
-			end
-			SendChatMessage("Hey there, " .. name .. "! " .. phrase, "RAID");
+	local raidSize = GetNumGroupMembers();
+		local i = math.random(raidSize);
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i);
+		if (isDead == false) then
+			local playerSpecRole = UnitGroupRolesAssigned(name);
+			local j = table.getn(dsa["roleLines"][playerSpecRole]);
+			phrase = dsa["roleLines"][playerSpecRole][math.random(j)];
 		else
-			print("not in a raid");
+			local d = table.getn(dsa.ifDead)
+			phrase =  dsa.ifDead[math.random(d)];
 		end
-	end
+		SendChatMessage("Hey there, " .. name .. "! " .. phrase, "YELL");
+		end
 end
 
 local function onUpdate(self, elapsed)
